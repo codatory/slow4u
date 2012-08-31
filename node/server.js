@@ -13,14 +13,22 @@ app.all('/*', function(req, res, next) {
 });
 
 app.get('/', function(req, res){
-	console.log('GET')
-	console.log(req)
-	res.send('Hello World.')
+	db.hvals(req.ip, function(err, vals){
+		sum = vals.reduce(function(pv,cv,index,array){
+			return pv + parseInt(cv)
+		}, 0)
+		avg = sum / vals.length
+		console.log(sum)
+		console.log(vals.length)
+		console.log(avg)
+		res.send({"average": avg})
+	})
 })
 
 app.post('/', function(req, res){
-	console.log(req.ip + ': ' + req.body.latency)
-	// db.zadd(req.ip, Date.now, req.body.latency)
+	console.log(req.ip + ': ' + req.headers.latency)
+	db.hset(req.ip, Date.now(), req.headers.latency)
+	db.expire(req.ip, 300)
 	res.send('OK')
 })
 

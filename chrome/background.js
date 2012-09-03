@@ -10,7 +10,7 @@ var updateReading = function(){
 	  avg = parseInt(JSON.parse(ajax.response).average)
 	}
 
-	if (!avg || avg == NaN ){
+	if ( isNaN(avg) ){
 		chrome.browserAction.setIcon({path: 'Yello.png'})
 	} else if (avg < 400) {
 		chrome.browserAction.setIcon({path: 'Dark_Green.png'})

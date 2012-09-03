@@ -1,7 +1,9 @@
-var express = require('express')
-var redis   = require('redis')
+var port = process.env.PORT || 3000
 
+var express = require('express')
 var app = express()
+
+var redis   = require('redis')
 var db = redis.createClient()
 
 app.use(express.bodyParser())
@@ -36,4 +38,4 @@ app.options('/', function(req,res){
 	res.send()
 })
 
-app.listen(3000)
+app.listen(port)

@@ -15,15 +15,39 @@ app.all('/*', function(req, res, next) {
 });
 
 app.get('/', function(req, res){
-	db.hvals(req.ip, function(err, vals){
-		sum = vals.reduce(function(pv,cv,index,array){
-			return pv + parseInt(cv)
-		}, 0)
-		avg = sum / vals.length
-		console.log(sum)
-		console.log(vals.length)
-		console.log(avg)
-		res.send({"average": avg})
+	db.get('cache_'+req.ip, function(err, val){
+		if (!err && val ){
+			console.log("Sending from cache for " + req.ip)
+			res.send({"average": val})
+		} else {
+			console.log("Uncached read for " + req.ip)
+			db.hkeys(req.ip, function(err, vals){
+				console.log('Housekeeping?')
+				now = Date.now()
+				old = now - 300000 // 5 minutes ago
+				expired = vals.filter(function(v){
+					return parseInt(v) < old
+				})
+				expired.forEach(function(key){
+					db.hdel(req.ip, key)
+				})
+			})
+			db.hvals(req.ip, function(err, vals){
+				var sum
+				var count
+				var average
+				count = vals.length
+				sum = vals.reduce(function(pv,cv,index,array){
+					return pv + parseInt(cv)
+				}, 0)
+				average = sum / count
+				console.log(average)
+				db.set('cache_'+req.ip, average, function(e){
+					db.expire('cache_'+req.ip, 29)
+				})
+				res.send({"average": average})
+			})
+		}
 	})
 })
 

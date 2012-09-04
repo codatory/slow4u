@@ -12,7 +12,7 @@
 	],
     "browser_action": {
         "default_title": "Slow4U?",
-        "default_icon": "Blue.png"
+        "default_icon": "connecting.png"
 	},
 	"background": {
 		"scripts": ["background.js"]

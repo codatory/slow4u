@@ -11,11 +11,11 @@ var updateReading = function(){
 	}
 
 	if ( isNaN(avg) ){
-		chrome.browserAction.setIcon({path: 'Yello.png'})
+		chrome.browserAction.setIcon({path: 'question.png'})
 	} else if (avg < 400) {
-		chrome.browserAction.setIcon({path: 'Dark_Green.png'})
+		chrome.browserAction.setIcon({path: 'check.png'})
 	} else {
-		chrome.browserAction.setIcon({path: 'Red.png'})
+		chrome.browserAction.setIcon({path: 'hourglass.png'})
 	}
 }
 

@@ -1,7 +1,8 @@
 var ajax = new XMLHttpRequest()
-var avg = NaN
+var avg = null
 
 var updateReading = function(){
+	avg = null
 	ajax.open('GET', 'http://slow4u.herokuapp.com/', false)
 	ajax.timeout = 1000
 	ajax.send()
@@ -12,6 +13,8 @@ var updateReading = function(){
 
 	if ( isNaN(avg) ){
 		chrome.browserAction.setIcon({path: 'question.png'})
+	} else if (avg == null) {
+		chrome.browserAction.setIcon({path: 'connecting.png'})
 	} else if (avg < 400) {
 		chrome.browserAction.setIcon({path: 'check.png'})
 	} else {

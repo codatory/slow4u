@@ -17,12 +17,14 @@ app.all('/*', function(req, res, next) {
 app.get('/', function(req, res){
 	db.get('cache_'+req.ip, function(err, val){
 		if (!err && val ){
-			console.log("Sending from cache for " + req.ip)
-			res.send({"average": val})
+			db.ttl('cache_'+req.ip, function(err,ttl){
+				console.log("Sending from cache for " + req.ip + " ttl "+ ttl)
+				res.header("Cache-Control", "private, max-age="+(ttl+1))
+				res.send({"average": val})
+			})
 		} else {
 			console.log("Uncached read for " + req.ip)
 			db.hkeys(req.ip, function(err, vals){
-				console.log('Housekeeping?')
 				now = Date.now()
 				old = now - 300000 // 5 minutes ago
 				expired = vals.filter(function(v){
@@ -45,6 +47,7 @@ app.get('/', function(req, res){
 				db.set('cache_'+req.ip, average, function(e){
 					db.expire('cache_'+req.ip, 29)
 				})
+				res.header("Cache-Control", "private, max-age=30")
 				res.send({"average": average})
 			})
 		}

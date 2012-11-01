@@ -351,5 +351,5 @@ var updateIcon = function(avg){
 }
 
 
-setInterval(updateReading, 30000)
+setInterval(updateReading, 10000)
 updateReading()

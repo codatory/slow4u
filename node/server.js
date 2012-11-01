@@ -45,9 +45,9 @@ app.get('/', function(req, res){
 				average = sum / count
 				console.log(average)
 				db.set('cache_'+req.ip, average, function(e){
-					db.expire('cache_'+req.ip, 29)
+					db.expire('cache_'+req.ip, 9)
 				})
-				res.header("Cache-Control", "private, max-age=30")
+				res.header("Cache-Control", "private, max-age=10")
 				res.send({"average": average})
 			})
 		}

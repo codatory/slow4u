@@ -3,7 +3,7 @@
 	"version": "0.5",
 	"manifest_version": 2,
 	"description": "Figure out if the Internet's slow for everyone in your office.",
-	"permissions": ["http://slow4u.herokuapp.com/"],
+	"permissions": ["http://slow4u.coda.to/"],
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],

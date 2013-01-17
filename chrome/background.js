@@ -319,7 +319,7 @@ function AsyncXMLHttpRequest() {
 // Begin plugin code
 var updateReading = function(){
 	var ajax = new AsyncXMLHttpRequest()
-	ajax.open('GET', 'http://slow4u.herokuapp.com/')
+	ajax.open('GET', 'http://slow4u.coda.to/')
 
 	ajax.timeout = 1000
 	
